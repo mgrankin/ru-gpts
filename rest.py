@@ -26,6 +26,15 @@ model.eval()
 from apex import amp
 model = amp.initialize(model, opt_level='O2')
 
+def fix_string(string):
+    out_string = re.findall(r'\w[-]\s\w', string)
+    for i in out_string:
+        a=i[:1];b=i[3:4];string = string.replace(i, a+'-'+b)
+    symbl = ['«', '(', '[', '{', '"', '\'']
+    for i in symbl:
+        string = string.replace(f' {i} ', f' {i}')
+    return string
+
 def get_sample(prompt, length:int, num_samples:int, allow_linebreak:bool):
     logger.info(prompt)
     encoded_prompt = tokenizer.encode(prompt, add_special_tokens=False, return_tensors="pt").to(device)
@@ -56,6 +65,7 @@ def get_sample(prompt, length:int, num_samples:int, allow_linebreak:bool):
     reg_text = [re.match(r'[\w\W]*[\.!?]\n', item) for item in generated_sequences]
     reg_text2 = [re.match(r'[\w\W]*[\.!?]', item) for item in generated_sequences]
     result = [reg_item[0] if reg_item else reg_item2[0] if reg_item2 else item for reg_item, reg_item2, item in zip(reg_text, reg_text2, generated_sequences)]
+    result = fix_string(result)
     return result
 
 from fastapi import FastAPI
