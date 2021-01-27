@@ -65,7 +65,7 @@ def get_sample(prompt, length:int, num_samples:int, allow_linebreak:bool):
     reg_text = [re.match(r'[\w\W]*[\.!?]\n', item) for item in generated_sequences]
     reg_text2 = [re.match(r'[\w\W]*[\.!?]', item) for item in generated_sequences]
     result = [reg_item[0] if reg_item else reg_item2[0] if reg_item2 else item for reg_item, reg_item2, item in zip(reg_text, reg_text2, generated_sequences)]
-    result = fix_string(result)
+    result = [fix_string(s) for s in result]
     return result
 
 from fastapi import FastAPI
