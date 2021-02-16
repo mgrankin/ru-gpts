@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 .idea/
+runs/
+.vscode/settings.json
+logs/
+pelevin/
+poetry/
+__pycache__
 
 # C extensions
 *.so
