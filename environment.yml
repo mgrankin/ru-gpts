@@ -5,20 +5,17 @@ channels:
   - defaults
 dependencies:
   - ipykernel
-  - python>=3.9.1
+  - python>=3.8,<3.9
   - pip
   - pytorch>=1.7.1
   - tensorboard
   - pip:
-    - nltk>=3.4
-    - numpy>=1.15.4
-    - pandas>=0.24.0
-    - sentencepiece>=0.1.8
-    - boto3==1.11.11
-    - regex==2020.1.8
-    - transformers==2.8.0
+    - transformers==3.5.1
     - fastai>=2
     - tendo
     - fastapi
     - uvicorn
+    - natsort
+    - ipywidgets
+    - triton==0.2.3
 #    - torch-blocksparse

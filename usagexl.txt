@@ -1,0 +1,41 @@
+conda activate rugpt
+
+python pretrain_transformers.py \
+    --block_size=1023 \
+    --train_data_file=$HOME/gpt_text/pelevin_train.txt \
+    --output_dir=$HOME/gpt2_large_bbpe_v50 \
+    --model_type=gpt2 \
+    --model_name_or_path=$HOME/gpt2_large_bbpe_v50 \
+    --do_eval \
+    --eval_data_file=$HOME/gpt_text/tolstoy_valid.txt \
+    --fp16
+
+MP_SIZE=1
+NUM_GPUS_PER_WORKER=1
+
+python pretrain_megatron.py \
+       --train-data /home/jovyan/data/train.jsonl \
+       --valid-data /home/jovyan/data/valid.jsonl \
+       --test-data /home/jovyan/data/valid.jsonl \
+       --save /home/jovyan/ruGPT3Large/checkpoints_${now}_${host} \
+       --load /home/jovyan/ruGPT3Large \
+       --tensorboard-dir /home/jovyan/ruGPT3Large/runs_${now}_${host} \
+       --save-interval 500 \
+       --eval-interval 500 \
+       --log-interval 100 \
+       --seq-length 512 \
+       --batch-size 1 \
+       --train-iters 200000 \
+       --distributed-backend nccl \
+       --lr 0.00015 \
+       --lr-decay-style cosine \
+       --weight-decay 1e-2 \
+       --clip-grad 1.0 \
+       --warmup .01 \
+       --fp16 \
+       --lazy-loader \
+       --checkpoint-activations \
+       --loose-json \
+       --text-key \
+       --finetune 
+
