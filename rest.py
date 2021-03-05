@@ -26,13 +26,22 @@ model.eval()
 from apex import amp
 model = amp.initialize(model, opt_level='O2')
 
-def fix_string(string):
-    out_string = re.findall(r'\w[-]\s\w', string)
-    for i in out_string:
-        a=i[:1];b=i[3:4];string = string.replace(i, a+'-'+b)
-    symbl = ['«', '(', '[', '{', '"', '\'']
-    for i in symbl:
-        string = string.replace(f' {i} ', f' {i}')
+def fix_string(string) -> str:
+    in_word = string
+    in_between_words = ['-', '–']
+    in_sentences = ['«', '(', '[', '{', '"', '„', '\'']
+
+    for item in in_between_words:
+        regex = r'\w[%s]\s\w' % item
+        in_word = re.findall(regex, string)
+
+        for x in in_word:
+            a = x[:1]; b = x[3:4]
+            string = string.replace(x, a + '-' + b)
+
+    for item in in_sentences:
+        string = string.replace(f' {item} ', f' {item}')
+
     return string
 
 def get_sample(prompt, length:int, num_samples:int, allow_linebreak:bool):
