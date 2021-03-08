@@ -7,15 +7,19 @@ dependencies:
   - ipykernel
   - python>=3.8,<3.9
   - pip
-  - pytorch>=1.7.1
+#  - pytorch>=1.7.1,<1.8
   - tensorboard
+#  - cudatoolkit>=11.2, <11.3
+#  - cudatoolkit-dev>=10.1, <10.2
   - pip:
-    - transformers==3.5.1
-    - fastai>=2
+    - --find-links https://download.pytorch.org/whl/torch_stable.html
+    - torch==1.8.0+cu111
+    - transformers
+#    - fastai>=2
     - tendo
     - fastapi
     - uvicorn
     - natsort
     - ipywidgets
-    - triton==0.2.3
+    - triton #==0.2.3
 #    - torch-blocksparse
